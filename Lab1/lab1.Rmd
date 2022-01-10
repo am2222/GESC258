@@ -11,6 +11,8 @@ output:
 
 ## GESC 258- Geographical Research Methods
 
+**Access online version of this document at (https://rpubs.com/majidhojati/gesc258lab1)**
+
 R-Studio is one of the most widely used software packages in data science, statistics and data analysis more generally. Many employers in the environmental field now greatly value skills in R - so even though the learning curve can be a little steeper, it is well worth the effort to learn this approach to data analysis. 
 
 Attend your first lab session to briefly meet your TA instructor and to get the course software installed on your computer. We will be using an open source software package called R and R-Studio for most of the work in this course.
@@ -28,7 +30,6 @@ As a supplement to the lab materials, I highly recommend using `[YaRrr! The Pira
 
 ## Part I: Getting started with R
 
-**Credit: Part I is mainly based on https://bookdown.org/ndphillips/YaRrr/ **
 
 In order to install and run R/Rstudio you can follow one of these methods.
 
@@ -45,11 +46,12 @@ If you prefer to use R studio on [virtual Remote desktop] (https://students.wlu.
 
 ### Working With R Studio
 
+**Credit: This section is based on https://bookdown.org/ndphillips/YaRrr/ **
 When you open RStudio, you’ll see the following four windows (also called panes)
  ![The main 4 sections are as follows](data/rstudio.jpg)
 
-The main 4 sections are as follows:
-
+The main 4 sections are as follows :
+ 
 #### Source - Your notepad for code (Top Left)
 
 The source pane is where you create and edit R Scripts" - your collections of code. When you open RStudio, it will automatically start a new Untitled script. Before you start typing in an untitled R script, you should always save the file under a new file name.
@@ -82,7 +84,10 @@ The Files / Plots / Packages / Help panel shows you lots of helpful information.
 
 1.	Files - The files panel gives you access to the file directory on your hard drive. One nice feature of the “Files” panel is that you can use it to set your working directory - once you navigate to a folder you want to read and save files to, click “More” and then “Set As Working Directory.”
 
-2.	Plots - The Plots panel (no big surprise), shows all your plots. There are buttons for opening the plot in a separate window and exporting the plot as a pdf or jpeg (though you can also do this with code using the pdf() or jpeg() functions.)
+2.	Plots - The Plots panel (no big surprise), shows all your plots. There are buttons for opening the plot in a separate window and exporting the plot as a pdf or jpeg (though you can also do this with code using the pdf() or jpeg() functions.) 
+
+
+> You can use this tab to `Export` plots and save them on your machine. 
 
 3.	Packages - Shows a list of all the R packages installed on your harddrive and indicates whether or not they are currently loaded. Packages that are loaded in the current session are checked while those that are installed but not yet loaded are unchecked. 
 
@@ -201,8 +206,6 @@ cities[1,] # this will show the first row of the cities dataframe. The general f
 cities[1,]$population # will give you the population field of the 1st row in your dataframe
 
 cities[1,"population"] #same as above
-
-
 
 
 ```
@@ -540,14 +543,19 @@ You can run `summary(cities)` to get most of the discriptive statistics for your
 ## Handin
 Please submit the final map you have made into MLS system. To export a plot use `Export` menu on the icons on top of the plot tab. 
 
+## Source of the data used in this lab
+
+[Canada CSI Data](https://dataverse.scholarsportal.info/dataset.xhtml?persistentId=doi:10.5683/SP2/OGRTT2 )
+
+[Canada Cities Database](https://simplemaps.com/data/canada-cities)
 
 ## References
 
-https://bookdown.org/ndphillips/YaRrr/installing-base-r-and-rstudio.html
+https://bookdown.org/ndphillips/YaRrr/
 
 Hartmann, K., Krois, J., Waske, B. (2018): E-Learning Project SOGA: Statistics and Geospatial Data Analysis. Department of Earth Sciences, Freie Universitaet Berlin.
 
 Mann, P. S. Introductory Statistics, 8th Edition; John Wiley and Sons, Incorporated, 2012.
 
-https://dataverse.scholarsportal.info/dataset.xhtml?persistentId=doi:10.5683/SP2/OGRTT2 
+
  
