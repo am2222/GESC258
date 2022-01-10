@@ -1,7 +1,7 @@
 ---
 title: "GESC 258- Lab 1 - Introduction to R "
-author: "ASSIGNED in Lab1, January 14th. Exercise Worth: 5% of final grade  "
-date: "DUE Date: before Lab 2 on January 21th"
+author: "ASSIGNED in Lab1, January 14th.DUE Date: Before lab 2 on January 21th."
+date: "Exercise Worth: 5% of final grade"
 output:
   prettydoc::html_pretty:
     theme: leonids
@@ -10,12 +10,6 @@ output:
 ---
 
 ## GESC 258- Geographical Research Methods
-
-Lab 1 - Introduction to R 
-ASSIGNED in Lab1, January 14th, 
-DUE DATES in the MyLearningSpace dropbox   
-before Lab 2 on January 21th
-Exercise Worth: 5% of final grade   
 
 R-Studio is one of the most widely used software packages in data science, statistics and data analysis more generally. Many employers in the environmental field now greatly value skills in R - so even though the learning curve can be a little steeper, it is well worth the effort to learn this approach to data analysis. 
 
@@ -29,7 +23,7 @@ In this lab you will:
 
 - Create simple graphs   
  
-As a supplement to the lab materials, I highly recommend using `YaRrr! The Pirate’s Guide to R`[https://bookdown.org/ndphillips/YaRrr/] - which has lots of great information and resources for learning R. You can read `chapter 2` for how to get it installed on your machine. The TA will verify everyone has a working installation of R on their machine in lab.
+As a supplement to the lab materials, I highly recommend using `[YaRrr! The Pirate’s Guide to R](https://bookdown.org/ndphillips/YaRrr/)` - which has lots of great information and resources for learning R. You can read `chapter 2` for how to get it installed on your machine. The TA will verify everyone has a working installation of R on their machine in lab.
 
 
 ## Part I: Getting started with R
@@ -45,9 +39,9 @@ https://bookdown.org/ndphillips/YaRrr/installing-base-r-and-rstudio.html
 
 **2-	Using Virtual Remote Desktop Labs **
 
-If you prefer to use R studio on virtual Remote desktop (https://students.wlu.ca/services-and-spaces/tech-services/assets/resources/virtual-computer-labs.html) you need to login to your online account and search for RStudio in the `start -> all programs`. 
+If you prefer to use R studio on [virtual Remote desktop] (https://students.wlu.ca/services-and-spaces/tech-services/assets/resources/virtual-computer-labs.html) you need to login to your online account and search for RStudio in the `start -> all programs`. 
 
-> "Make sure to setup one drive on your remote desktop machine to avoid losing your data. Ask your lab instructor if you need help setting one drive up."
+> "Make sure to setup onedrive on your remote desktop machine to avoid losing your data. Ask your lab instructor if you need help setting onedrive up."
 
 ### Working With R Studio
 
@@ -71,9 +65,12 @@ The console is the heart of R. Here is where R actually evaluates code. At the b
 ```{r}
 1+1
 ```
-> "Tip: Try to write most of your code in a document in the Source. Only type directly into the Console to de-bug or do quick analyses."
-> "Tip: If you use # at the beginning of a line in R code it will not get executed. We usually use # at the beginning of lines to write 
-comments in the code."
+
+> Tip: Try to write most of your code in a document in the Source. Only type directly into the Console to de-bug or do quick analyses.
+>
+> Tip: If you use # at the beginning of a line in R code it will not get executed. We usually use # at the beginning of lines to write 
+comments in the code.
+
 
 ####  Environment / History (Top Right)
 
@@ -82,10 +79,15 @@ The Environment tab of this panel shows you the names of all the data objects (l
 ####  Files / Plots / Packages / Help (Bottom Right)
 
 The Files / Plots / Packages / Help panel shows you lots of helpful information. Let’s go through each tab in detail:
+
 1.	Files - The files panel gives you access to the file directory on your hard drive. One nice feature of the “Files” panel is that you can use it to set your working directory - once you navigate to a folder you want to read and save files to, click “More” and then “Set As Working Directory.”
+
 2.	Plots - The Plots panel (no big surprise), shows all your plots. There are buttons for opening the plot in a separate window and exporting the plot as a pdf or jpeg (though you can also do this with code using the pdf() or jpeg() functions.)
+
 3.	Packages - Shows a list of all the R packages installed on your harddrive and indicates whether or not they are currently loaded. Packages that are loaded in the current session are checked while those that are installed but not yet loaded are unchecked. 
+
 4.	Help - Help menu for R functions. You can either type the name of a function in the search window, or use the code to search for a function with the name
+
 ```{r eval=FALSE, include=FALSE}
 ?mean   # How does the mean function work?
 ?t.test # What about a t-test?
@@ -157,7 +159,7 @@ In this section, we’ll analyze a dataset called cities. The dataset contains d
 
 
 ```{r cities}
-cities <- read.csv("data/canadian_population_centers.csv") #loading dataset into R as a dataframe
+cities <- read.csv("https://raw.githubusercontent.com/am2222/GESC258/master/Lab1/data/canadian_population_centers.csv") #loading dataset into R as a dataframe
 ```
 
 Once you run above code you will see a new item called `cities` is added to the `environment` panel in the RStudio. A very common data structure is an array. In different domains there are other names for such a type of data used synonymously, such as `matrix` in mathematics, `table` in databases, `spreadsheet`, and `data frame`, which is a fundamental R object. Click on `cities` in the `Environment` tab to open it in a new windows. You can also type the following command in RConsole to get the same result.
@@ -191,7 +193,7 @@ names(cities)
 
 You can access dataframe columns and rows using following methods
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 cities$population # this will show the `population` column for all the rows
 
 cities[1,] # this will show the first row of the cities dataframe. The general form is cities[n,] where n<=length(cities)
@@ -382,9 +384,12 @@ overall_csi.sd3.neg <- overall_csi.mean - overall_csi.sd*3
 overall_csi.sd1 <- 100 - sum(overall_csi > overall_csi.sd1.pos | overall_csi < overall_csi.sd1.neg) / length(overall_csi) * 100
 overall_csi.sd2 <- 100 - sum(overall_csi > overall_csi.sd2.pos | overall_csi < overall_csi.sd2.neg) / length(overall_csi) * 100
 overall_csi.sd3 <- 100 - sum(overall_csi > overall_csi.sd3.pos | overall_csi < overall_csi.sd3.neg) / length(overall_csi) * 100
-cbind(c('1sd','2sd','3sd'), c("Don't Apply", round(sd2), round(sd3,1)),c(overall_csi.sd1, overall_csi.sd2, overall_csi.sd3) )
+cbind(c('1sd','2sd','3sd'), c("--", round(sd2), round(sd3,1)),c(overall_csi.sd1, overall_csi.sd2, overall_csi.sd3) )
 
 ```
+
+As you see in this table our data is following `Chebyshev’s Theorem`. Lets make a histogram from our data and show different standard devitions on it.
+
 
 
 ```{r}
@@ -401,19 +406,17 @@ cuts <- cut(h$breaks, c(-Inf,
                         Inf))
 plot(h,
      col = rep(c("white", "4","3","2","3","4", "white"))[cuts], 
-     main = 'distribution', 
+     main = 'Distribution', 
      xlab = 'Overall CSI in Canadian cities', 
-     freq = F)
-
+     freq = F) 
 # add legend
-legend(x = min(x.vector2plot)*1.1,
-       y = max(h$density)*0.9, 
+legend('topright', 
        legend = c("1 s.d.","2 s.d.","3 s.d."), 
        col = c(2,3,4), 
        pch = 15)
 
 
-````
+```
 
 
 ## Quartiles and Interquartile Range
@@ -451,7 +454,6 @@ plot(h,
      col = rep(c("4","4","3","2","1"))[cuts], 
      main = 'Quartiles', 
      xlab = 'Numerus Clausus score')
-
 # add legend
 legend('topright', 
        legend = c("1st","2nd","3rd","4th"), 
@@ -514,27 +516,19 @@ library(maps)
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE }
 
-spdf <- geojson_read("data/georef-canada-province.geojson",  what = "sp")
-# plot the selected are with sp
-#par(mar=c(0,0,0,0))
+# reading data from its url
+spdf <- geojson_read("https://github.com/am2222/GESC258/raw/master/Lab1/data/georef-canada-province.geojson",  what = "sp")
+# convert it to an object we are able to plot 
 spdf_fortified <- tidy(spdf)
 # Plot it
-
 ggplot() +
   geom_polygon(data = spdf_fortified, aes( x = long, y = lat, group = group), fill="#69b3a2", color="white") +
   coord_map("conic", lat0 = 30) +
   geom_point(data=prov, 
-             aes(x=lng, y=lat, colour=population), size=5, alpha=I(0.7))+
-
+             aes(x=lng, y=lat, colour=population), size=5, alpha=I(0.7)) +
   annotate(geom = "text", x = -125, y = 40, label = "Your Name/Date", 
            fontface = "italic", color = "grey22", size =4) 
 
-#geom_label(data= prov,aes(x=lng, y=lat, label=province_name),
-   #       color = "black",label.padding = unit(1, "mm"), check_overlap = T) +
-#annotation_scale(location = "bl", width_hint = 0.5) +
-   # annotation_north_arrow(location = "bl", which_north = "true", 
-     #   pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
-      #  style = north_arrow_fancy_orienteering) 
 
 ```
 
