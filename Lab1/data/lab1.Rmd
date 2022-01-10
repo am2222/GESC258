@@ -1,0 +1,74 @@
+---
+title: "GESC 258- Lab1"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## GESC 258- Geographical Research Methods
+Lab 1 - Introduction to R 
+ASSIGNED in Lab1, January 14th, 
+DUE DATES in the MyLearningSpace dropbox   
+before Lab 2 on January 21th
+Exercise Worth: 5% of final grade   
+
+R-Studio is one of the most widely used software packages in data science, statistics and data analysis more generally. Many employers in the environmental field now greatly value skills in R - so even though the learning curve can be a little steeper, it is well worth the effort to learn this approach to data analysis. 
+Attend your first lab session to briefly meet your TA instructor and to get the course software installed on your computer. We will be using an open source software package called R and R-Studio for most of the work in this course.
+In this lab you will:   
+• Familiarize yourself with the R studio interface   
+• Learn the basic of R programing
+• Create simple graphs   
+ 
+As a supplement to the lab materials, I highly recommend using YaRrr! The Pirate’s Guide to R - which has lots of great information and resources for learning R. You can read chapter 2 for how to get it installed on your machine. The TA will verify everyone has a working installation of R on their machine in lab.
+
+
+## Part I: Getting started with R
+
+You can include R code in the document as follows:
+
+
+
+## Part II: Statistical Analysis in R
+
+
+In this section, we’ll analyze a dataset called cities. The dataset contains data from `1748` population centers acrous Canada. Run the following lines to load this dataset into R.  
+
+```{r cities}
+cities <- read.csv("canadian_population_centers.csv") #Hint: type ?read.csv into R console to learn how this function works
+```
+
+> "Hint: type ?read.csv into R console to learn how this function works"
+
+$$
+f(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+$$
+
+```{r eval=FALSE, include=FALSE}
+summary(cities)
+head(cities)
+
+```
+```{r}
+
+knitr::kable(head(cities))
+```
+
+```{r}
+tail(cities)
+
+```
+#Measures of Central Tendency
+There are three main measures of central tendency: the mean, the median, and the mode;
+```{r}
+c.pops <- cities$population # extract populations vector
+c.pops.n <- length(c.pops) # get the length of the populations vector, which is the number of observations
+c.pops.sum <- sum(c.pops) # sum up the heights vector
+c.pops.xbar <- c.pops.sum / c.pops.n 
+sprintf("The arithmetic mean populations in the canadian cities data set is: %s", round(c.pops.xbar,1))
+
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
