@@ -1,7 +1,7 @@
 ---
 title: "GESC 258- Lab 1 - Introduction to R "
-author: "ASSIGNED in Lab1, January 14th.DUE Date: Before lab 2 on January 21th."
-date: "Exercise Worth: 5% of final grade"
+author: "ASSIGNED in Lab1, January 14th. "
+date: "Exercise Worth: 5%"
 output:
   prettydoc::html_pretty:
     theme: leonids
@@ -21,7 +21,7 @@ In this lab you will:
 
 - Familiarize yourself with the R studio interface   
 
-- Learn the basic of R programing
+- Learn the basic of R programming
 
 - Create simple graphs   
  
@@ -31,18 +31,21 @@ As a supplement to the lab materials, I highly recommend using `[YaRrr! The Pira
 ## Part I: Getting started with R
 
 
-In order to install and run R/Rstudio you can follow one of these methods.
+In order to use R/Rstudio you can follow one of the following methods.
 
-**1-	Installing R and R/ Studio on your machine**
 
-Please follow the steps explained in the Chapter 2 of YaRrr to install R and R/Studio on your machine. 
-https://bookdown.org/ndphillips/YaRrr/installing-base-r-and-rstudio.html
 
-**2-	Using Virtual Remote Desktop Labs **
+**1-	Using Virtual Remote Desktop Labs (Recommended) **
 
 If you prefer to use R studio on [virtual Remote desktop] (https://students.wlu.ca/services-and-spaces/tech-services/assets/resources/virtual-computer-labs.html) you need to login to your online account and search for RStudio in the `start -> all programs`. 
 
 > "Make sure to setup onedrive on your remote desktop machine to avoid losing your data. Ask your lab instructor if you need help setting onedrive up."
+
+
+**2-	Installing R and R/ Studio on your machine**
+
+Please follow the steps explained in the Chapter 2 of YaRrr to install R and R/Studio on your machine. 
+https://bookdown.org/ndphillips/YaRrr/installing-base-r-and-rstudio.html
 
 ### Working With R Studio
 
@@ -56,7 +59,7 @@ The main 4 sections are as follows :
 
 The source pane is where you create and edit R Scripts" - your collections of code. When you open RStudio, it will automatically start a new Untitled script. Before you start typing in an untitled R script, you should always save the file under a new file name.
 
-> "NOTE: If you see a “*” is shown beside your filename. It means you have unsaved changes in your source. "
+> "NOTE: If you see a “*” is shown beside your file name. It means you have unsaved changes in your source. "
 
 You’ll notice that when you’re typing code in a script in the Source panel, R won’t actually evaluate the code as you type. To have R actually evaluate your code, you need to first `send` the code to the Console.
 There are many ways to send your code from the Source to the console. The slowest way is to copy and paste. A faster way is to highlight the code you wish to evaluate and clicking on the `run` button on the top right of the Source. 
@@ -72,7 +75,8 @@ The console is the heart of R. Here is where R actually evaluates code. At the b
 >
 > Tip: If you use # at the beginning of a line in R code it will not get executed. We usually use # at the beginning of lines to write 
 comments in the code.
-
+>
+> HINT: during this document if a line or section starts with `##` it means it is output of the code and it is only for your information. 
 
 ####  Environment / History (Top Right)
 
@@ -89,7 +93,7 @@ The Files / Plots / Packages / Help panel shows you lots of helpful information.
 
 > You can use this tab to `Export` plots and save them on your machine. 
 
-3.	Packages - Shows a list of all the R packages installed on your harddrive and indicates whether or not they are currently loaded. Packages that are loaded in the current session are checked while those that are installed but not yet loaded are unchecked. 
+3.	Packages - Shows a list of all the R packages installed on your hard drive and indicates whether or not they are currently loaded. Packages that are loaded in the current session are checked while those that are installed but not yet loaded are unchecked. 
 
 4.	Help - Help menu for R functions. You can either type the name of a function in the search window, or use the code to search for a function with the name
 
@@ -104,7 +108,7 @@ You can simply do arithmetic in R console, for example type the following codes 
 100+23
 ```
 
-The following are the simple mathematic functions can be used in R
+The following are the simple mathematics functions can be used in R
 
 -	Exponents: `^` or `**`
 
@@ -158,7 +162,7 @@ then
 \newpage
 ## Part II: Statistical Analysis in R
 
-In this section, we’ll analyze a dataset called cities. The dataset contains data from `1748` population centers acrous Canada. Run the following lines to load this dataset into R.  
+In this section, we’ll analyze a dataset called cities. The dataset contains data from `1748` population centers across Canada. Run the following lines to load this dataset into R.  
 
 > "Hint: type `?read.csv` into R console to learn how this function works"
 
@@ -173,7 +177,7 @@ Once you run above code you will see a new item called `cities` is added to the 
 View(cities)
 ```
 
-Explore the data. As you see there are different types of columns in this dataset. Some of the columns are in Text format such as `city` or `province_id`. In R we call this type of columns `characters` or `strings`. Some of the columns are all numerical like `population` which represent population of each region. Scroll down to this table and in the `overall_csi_index` column you will see some of the values are shown as `NA`. It means that the value for this cell is missing. Notice that a missing value is different than a `zero` value. During your calculations, you should alwayse be aware of `NA` values. 
+Explore the data. As you see there are different types of columns in this dataset. Some of the columns are in Text format such as `city` or `province_id`. In R we call this type of columns `characters` or `strings`. Some of the columns are all numerical like `population` which represent population of each region. Scroll down to this table and in the `overall_csi_index` column you will see some of the values are shown as `NA`. It means that the value for this cell is missing. Notice that a missing value is different than a `zero` value. During your calculations, you should always be aware of `NA` values. 
 Now, let’s take a look at the first few rows of the dataset using the `head()` function. This function will show you the first few rows of the dataframe.
 
 
@@ -252,20 +256,20 @@ The calculation of the median consists of the following two steps:
 median(c.population) # returns the median of the c.population
 c.population.median<- median(c.population) # we save median for future use
 ```
-Other usefull function to explore a dataset:
+Other useful function to explore a dataset:
 
 ```{r}
 c.population.min <- min(c.population) # returns the min value of the c.population
 c.population.max <- max(c.population) # returns the max value of the c.population
 city_min <- cities[cities$population==c.population.min,] # returns the row that has min population
 city_max <- cities[cities$population==c.population.max[1],] # returns the row that has max population in cities dataframe
-sprintf("%s has max numper of population and %s has min number of population", city_max$city,city_min$city)
+sprintf("%s has max number of population and %s has min number of population", city_max$city,city_min$city)
 
 ```
 
 
 ## The Mode
-In statistics, the mode represents the most common value in a data set. Therefore, the mode is the value that occurs with the highest frequency in a data set (Mann 2012). You can calculate `the mode` of a column using the folowing method
+In statistics, the mode represents the most common value in a data set. Therefore, the mode is the value that occurs with the highest frequency in a data set (Mann 2012). You can calculate `the mode` of a column using the following method
 
 ```{r}
 uniqv <- unique(c.population) # find all the uniqe values in the c.population 
@@ -277,7 +281,7 @@ uniqv[which.max(tabulated)] #Find the item which has max number of occerance
 Lets plot population of canadian cities and their mean value
 
 ```{r}
-plot(c.population, ylim = c(min(c.population),max(c.population)*1.3)) #plot figure
+plot(c.population, ylim = c(min(c.population),max(c.population))) #plot figure
 abline(h = mean(c.population), 
        col='red', 
        lwd = 3) # add horizontal line
@@ -295,12 +299,12 @@ legend('topright',
 
 >"The median is not influenced by outliers. as a result the median is preferred over the mean as a measure of central tendency for data sets that contain outliers."
 
-As you see the outlayers are causing a problem in visualizing our data. 
+As you see the outliers are causing a problem in visualizing our data. 
 
 ## Measures of Dispersion
 The measures of central tendency, such as the mean, median, and mode, do not reveal the whole picture of the distribution of a data set. Two data sets with the same mean may have completely different spreads(Hartmann, 2018). The measures of central tendency and dispersion taken together give a better picture of a data set than the measures of central tendency alone (Mann 2012).
 
-We will use cCrime Severity Index (CSI) for 2020 in this section. AS you remember there are `NA` values in the `overall_csi_index` field. The principal behind the Crime Severity Index (CSI) is to measure the seriousness of crime reported to the police year to year by Statistics Canada. lets first clean the dataset and remove them. 
+We will use crime Severity Index (CSI) for 2020 in this section. AS you remember there are `NA` values in the `overall_csi_index` field. The principal behind the Crime Severity Index (CSI) is to measure the seriousness of crime reported to the police year to year by Statistics Canada. lets first clean the dataset and remove them. 
 
 
 
@@ -328,7 +332,7 @@ The `standard deviation` is obtained by taking the square root of the `variance`
 
 $$s = \sqrt{\frac{\sum_{i=1}^n (x_i-\bar x)^2}{n-1}}$$
 
-```{r include=FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 overall_csi.var <- var(overall_csi) #variance
 overall_csi.sd <- sd(overall_csi) #standard deviation
 # concatenate the vectors and round to 2 digits
@@ -338,9 +342,15 @@ overall_csi.stats <- round(cbind(overall_csi.mean,
                                  overall_csi.range),2)
 
 colnames(overall_csi.stats) <- c('mean', 'variance', 'standard deviation','range') # rename column names
+
+
+```
+Type the following to see the result of `overall_csi.stats`
+```{r eval=FALSE}
 overall_csi.stats
 
 ```
+
 
 ```{r echo=FALSE}
 knitr::kable(overall_csi.stats)
@@ -391,13 +401,12 @@ cbind(c('1sd','2sd','3sd'), c("--", round(sd2), round(sd3,1)),c(overall_csi.sd1,
 
 ```
 
-As you see in this table our data is following `Chebyshev’s Theorem`. Lets make a histogram from our data and show different standard devitions on it.
+As you see in this table our data is following `Chebyshev’s Theorem`. Lets make a histogram from our data and show different standard deviations on it.
 
 
 
 ```{r}
 h <- hist(overall_csi, breaks = 100, plot = F)
-x.vector2plot <- seq(overall_csi.sd3.neg*0.9, overall_csi.sd3.pos*1.1,1)
 
 cuts <- cut(h$breaks, c(-Inf,
                         overall_csi.sd1.neg,
@@ -436,7 +445,7 @@ To calculate the quartiles for a variable, we apply the function `quantile()`. I
 overall_csi.quantile <- quantile(overall_csi)
 
 ```
-In order to calculate the $IQR$ for the `overall_csi` variable we either substract `overall_csi.quantile[4] - overall_csi.quantile[3]` or use `IQR()` function:
+In order to calculate the $IQR$ for the `overall_csi` variable we either subtract `overall_csi.quantile[4] - overall_csi.quantile[3]` or use `IQR()` function:
 
 ```{r}
 
@@ -444,7 +453,7 @@ IQR(overall_csi)
 
 ```
 
-lets plot our quantiles
+lets plot our quartiles
 
 
 ```{r}
@@ -456,7 +465,7 @@ cuts <- cut(h$breaks, c(0, quantile(overall_csi)))
 plot(h,
      col = rep(c("4","4","3","2","1"))[cuts], 
      main = 'Quartiles', 
-     xlab = 'Numerus Clausus score')
+     xlab = 'Crime Severity Index')
 # add legend
 legend('topright', 
        legend = c("1st","2nd","3rd","4th"), 
@@ -470,7 +479,7 @@ legend('topright',
 
 As the last part of this lab we want to plot a few maps. Lets first calculate `mean` of population per each province. This functionality is called `grouping by` we use the following code example:
 
-> "aggregate(df$col_to_aggregate, list(df$col_to_group_by), FUN=mean)"
+`aggregate(df$col_to_aggregate, list(df$col_to_group_by), FUN=mean)`
 
 where `col_to_group_by` is the variable we want to first group rows and then calculate `mean` of the `col_to_group_by`.
 
@@ -497,8 +506,8 @@ knitr::kable(prov)
 
 Lets install a few packages we need for this section.
 ```{r eval=FALSE}
-# Let's read the jeoJson file that is stored on the web with the geojsonio library:
-install.packages(c("geojsonio","ggplot2","broom","sp","ggspatial"))  #install packages
+
+install.packages(c("geojsonio","ggplot2","broom","sp","ggspatial","mapproj","Rcpp"))  #install packages
 ```
 
 
@@ -506,6 +515,7 @@ install.packages(c("geojsonio","ggplot2","broom","sp","ggspatial"))  #install pa
 
 # load packages into R
 library(geojsonio)
+library(mapproj)
 library(sp)
 library(broom)
 library(ggplot2)
@@ -519,7 +529,7 @@ library(maps)
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE }
 
-# reading data from its url
+# Let's read the jeoJson file that is stored on the web with the geojsonio library:
 spdf <- geojson_read("https://github.com/am2222/GESC258/raw/master/Lab1/data/georef-canada-province.geojson",  what = "sp")
 # convert it to an object we are able to plot 
 spdf_fortified <- tidy(spdf)
@@ -538,9 +548,9 @@ ggplot() +
 
 ## Extra Note
 
-You can run `summary(cities)` to get most of the discriptive statistics for your dataframe ;).
+You can run `summary(cities)` to get most of the descriptive statistics for your dataframe ;).
 
-## Handin
+## Hand in
 Please submit the final map you have made into MLS system. To export a plot use `Export` menu on the icons on top of the plot tab. 
 
 ## Source of the data used in this lab
