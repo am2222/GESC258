@@ -1,0 +1,404 @@
+---
+title: "GESC 258- Lab 3 - Probability Distributions"
+author: "ASSIGNED in Lab4, Feb 4th. "
+date: "Due Date: March 4th"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+    math: katex
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## GESC 258- Geographical Research Methods
+
+**Access online version of this document at (https://rpubs.com/majidhojati/gesc258lab3)**
+
+This lab has two parts. Your Lab demonstrator will teach you the first part on (Feb 4th) and the second part on (Feb 18th). 
+This week we review a discrete distribution in the first part. In the second part we will look at the continues distribution.
+
+## Part I: Number of river overflows as a binomial distribution
+
+Binomial distribution is a distribution that applies to the experiments that have two outcomes (`success` or `failiur`). Tossing a coin more than once is an example of binomial distribution. There are many real-life examples of binomial distribution. Such as number of side effects from medications, or number of spam emails/calls that you might receive per day. A good example of binomial distribution in geography is **100-year flood**. A `100-year flood` is a flood event that has a 1 in 100 chance (0.01 probability) of being equaled or exceeded in any given year. Similarly we have `50-year flood` which is a flood event that has a 1 in 50 chance (0.2 probability) of occurring. Read more about this concept here :http://bcn.boulder.co.us/basin/watershed/flood.html.  The Binomial distribution can be used to calculate the probability of experiencing a certain number of `50-year` floods in a specified number of years. In this lab we are going to calculate the probability of having `x` number **50-year flood** in 50 years period. 
+
+So to get started we will first define our binomial model. We know the probability of a 50-year flood happening each year is `0.2` so this is probability of `success` or $p=0.2$. What is probability of failure? We can calculate it using this equation:
+
+$$q = 1- p$$
+As you recall, a binomial distribution has two parameters, `n` and `p`. As we mentioned in the first paragraph we are going to calculate probability of `x` number of `50-year floods` in a 50 years period, so $n=50$. We can now easily define our binomial model as $X~B(50,0.2)$.
+Lets start calculations in the R. First we need to define our variables. We can define them as follows:
+
+> please pay attention on the comments in each line of the codes
+
+
+```{r}
+n <- 50 #number of binomial tests 
+p <- 0.2 # probability of success
+
+```
+
+If you want to find out what is the probability of having `3` 50-year flood in 50 years you need to find $P(x=3)$. In R you can use the following function:
+
+```{r}
+
+px_3 <- dbinom(3,n,p) # n  and p are already defined in the pervious part. We are storing output of dbinom as px_3
+px_3
+
+```
+
+Now we want to calculate all the probability values for all the possible values of `X`. Recall that the domain of binomial distribution is from `0` to `n`. So we need to run `dbinom(x,n,p)` 50 times and change x parameter every time. Another faster way  to do it is to define a vector of numbers from 0 to 100 and pass it as `x` to `dbinom(x,n,p)`. lets do it in R:
+
+```{r}
+
+x <- 1:n # We define a vector of numbers starting from 1 and ending with n=100
+x
+```
+
+so if you pass variable `x` to the `dbinom` function, it will calculate all the possible values for you.
+
+```{r}
+
+Px <- dbinom(x,n,p)
+Px
+
+```
+
+
+In the above output, the first value (`Px[1]`) is probability of having `x=1`, 100-year floods in `n=100` years. we can say $P(x=1)=0.17$. To find max value of probabilities we can use `max(Px)` which is 
+```{r}
+max(Px)
+```
+
+> e-01 in R means Scientific_notation, read more about it https://en.wikipedia.org/wiki/Scientific_notation
+
+lets start plotting. Here we set a few parameters for our plot and make a new blank plot using `plot.new()` function. using `plot.window()` function we set our plot's `x` and `y` ranges. As you see we set `x` axis limit using `xlim` parameter and set `y` axis limit using `ylim` parameter. both `xlim` and `ylim` parameters should be in form of a range. it means they should have `min` and `max` of our values. In our x axis we want to plot `x` value (vector of numbers between 1 and n=50) and as a result `xlim=c(1,50)`  and for the y axis we want to plot probability value range from 0 to `max(Px)` where `Px` is out calculated values so `ylim=c(0, max(Px)+0.2)` We sum `max(Px)` with `0.2` to add an extra gap on top of our chart. In the next line of code we use `barplot` to plot values of `Px` on the chart. pay attention to `col` parameter which is a color and you can change it to whatever color you want. `space` parameter is the space between bars in barplot. 
+
+Read comments of following section of code:
+
+```{r}
+par(mar=c(5,5,5,5), las=1) # we set a margin of 5 pixels around our charts to have enough room for labels 
+plot.new() # create a new plot
+plot.window(xlim=c(1,50), ylim=c(0, max(Px)+0.2)) + # set our plot's ylim and xlim
+barplot(Px,space=0, ylim=c(0, max(Px)+0.2),col="orange") # draw bar plot. col can be name of your colors like orange, blue, red
+
+```
+
+Now we want to add `axis` to our plot. we use `axis` function to do it. `side` parameter in this function determines the side of the axis. 1 is bottom, 2 is left, 3 is top and 4 is right side. `at` parameter tells to the R to add a `tick` to the presented coordinates. `at=seq(0.5,n, by=1)` means that add a tick every 1 unit, starting from 0.5 and end at n=50. `labels` parameter tells R to add a label on defined ticks. 
+```{r}
+
+par(mar=c(5,5,5,5), las=1)
+plot.new()
+plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
+barplot(Px,space=0, ylim=c(0, max(Px)+0.2),col="orange")
+
+### New Lines of code
+axis(side=1, at=seq(0.5,n, by=1), labels=seq(1,n, by=1)) # set ticks at defined positions for x axis
+
+```
+now we want to draw a box around our plot. we use `box()` function. 
+```{r}
+par(mar=c(5,5,5,5), las=1)
+plot.new()
+plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
+barplot(Px,space=0, ylim=c(0, max(Px)+0.2),col="orange")
+axis(side=1, at=seq(0.5,n, by=1), labels=seq(1,n, by=1)) # set ticks at defined positions for x axis
+
+### New Lines of code
+box()
+```
+
+Now Lets imagine we want to find probability of having less than or equal 9 event `P(x<=9)`. If we want to show `P(x<=9)` on the chart using a line and arrow we use two functions called `lines` and `arrows`. `lines` functions gets a vector of `x` values and a vector of `y` values to draw a line based on the `(x,y)` values. `lwd` is thickness of the line and `lty` is type of line. `arrows` function is similar but it will get `x0` and `y0` as start point of the arrow and `x1` and `y1` as end point of arrow. use `?lines` or `?arrows` command to find out more about this function.
+
+Also we can use `text` function to add a text on `(x,y)` location on the chart. 
+
+
+
+We can do it using this function `px_9 <- dbinom(9,n,p)` and if 
+```{r}
+
+par(mar=c(5,5,5,5), las=1)
+plot.new()
+plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
+barplot(Px,space=0, ylim=c(0, max(Px)+0.2),col="orange")
+axis(side=1, at=seq(0.5,n, by=1), labels=seq(1,n, by=1)) # set ticks at defined positions for x axis
+box()
+
+### New Lines of code
+lines(x=c(9,9),y=c(0,0.3), col="red",lwd=2,lty="dashed")
+arrows(x0=9,y0=0.3,x1=0,y1=0.3, col = "red", lwd=2, lty="dashed")
+text(x=4.2,y=0.32,"P(x<=9)")
+
+```
+To calculate `P(x<=9)` we have Several methods. One method is to calculate `P(x=1)+ P(x=2) + ... + P(x=9)`. Lets try this method.
+
+```{r}
+dbinom(1,n,p) + dbinom(2,n,p) + dbinom(3,n,p) + dbinom(4,n,p) + dbinom(5,n,p) + dbinom(6,n,p) + dbinom(7,n,p)+ dbinom(8,n,p) +dbinom(9,n,p)
+```
+ 
+ > you can also use this function to get the same result. `sum(dbinom(1:9,n,p) )`
+ 
+ 
+ Another more advanced method is to calculate `cumulative probability values` using `pbinom` function. Type `?pbinom` in R console to learn what are its parameters. Lets look at its output when we run it with `x from 1 to 50` and `n=50` and `p=0.2`
+ 
+ 
+```{r}
+ cumulativePx <- pbinom(x,n,p) 
+ cumulativePx
+```
+ 
+ As you see this function first calculates `P(x=1)` then calculates `P(x=1) + P(x=2)` and continues until reaches to `P(x=1) + P(x=2) + ,,, P(x=n)`.  Lets plot it on the chart.
+ 
+ 
+```{r}
+ 
+par(mar=c(5,5,5,5), las=1)
+plot.new()
+plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
+barplot(Px,space=0, ylim=c(0, max(Px)+0.2),col="orange")
+axis(side=1, at=seq(0.5,n, by=1), labels=seq(1,n, by=1)) # set ticks at defined positions for x axis
+box()
+lines(x=c(9,9),y=c(0,0.3), col="red",lwd=2,lty="dashed")
+arrows(x0=9,y0=0.3,x1=0,y1=0.3, col = "red", lwd=2, lty="dashed")
+text(x=4.2,y=0.32,"P(x<=9)")
+
+### New Lines of code
+cumulativePx <- pbinom(x,n,p) 
+plot.window(xlim=c(0,n), ylim=c(0,1.5)) # we define a new plot window and set xlim and ylim, xlim is same as our previous plot but ylim is from 0 to 1.5
+lines(x, cumulativePx, col="red", lwd=2) #draw a line, with color=  red, width=2 and x coordinates of 0 to 50 and y coordinates of cumPX
+axis(side=4,at=seq(0,1.5, by=0.2), labels=seq(0,1.5, by=0.2))  # same as before we add an axis on the right side (side=4) and add ticks from 0 to 1.5 with 0.2 intervals, and label them
+ 
+ 
+```
+ 
+ Lets add title and labels to our plot
+ 
+```{r}
+par(mar=c(5,5,5,5), las=1)
+plot.new()
+plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
+barplot(Px,space=0, ylim=c(0, max(Px)+0.2),col="orange")
+axis(side=1, at=seq(0.5,n, by=1), labels=seq(1,n, by=1)) 
+box()
+lines(x=c(9,9),y=c(0,0.3), col="red",lwd=2,lty="dashed")
+arrows(x0=9,y0=0.3,x1=0,y1=0.3, col = "red", lwd=2, lty="dashed")
+text(x=4.2,y=0.32,"P(x<=9)")
+cumulativePx <- pbinom(x,n,p) 
+plot.window(xlim=c(0,n), ylim=c(0,1.5))
+lines(x, cumulativePx, col="red", lwd=2) 
+axis(side=4,at=seq(0,1.5, by=0.2), labels=seq(0,1.5, by=0.2)) 
+
+### New Lines of code
+title("Binomial distribution for n=50 and p=0.2")
+mtext("Cumulative Probability", side = 4, las=3, line=3 ) # you can change values of las and line to see their effect on your axis's title
+mtext("Probability", side = 2, las=3, line=3)
+```
+ 
+ Now we want to draw a `polygon` on the chart to highlight areas under chart that show `P(x<=9)` and `P(x>9)`
+ 
+ 
+ 
+```{r}
+par(mar=c(5,5,5,5), las=1)
+plot.new()
+plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
+barplot(Px,space=0, ylim=c(0, max(Px)+0.2),col="orange")
+axis(side=1, at=seq(0.5,n, by=1), labels=seq(1,n, by=1)) 
+box()
+lines(x=c(9,9),y=c(0,0.3), col="red",lwd=2,lty="dashed")
+arrows(x0=9,y0=0.3,x1=0,y1=0.3, col = "red", lwd=2, lty="dashed")
+text(x=4.2,y=0.32,"P(x<=9)")
+cumulativePx <- pbinom(x,n,p) 
+plot.window(xlim=c(0,n), ylim=c(0,1.5))
+lines(x, cumulativePx, col="red", lwd=2) 
+axis(side=4,at=seq(0,1.5, by=0.2), labels=seq(0,1.5, by=0.2)) 
+
+### New Lines of code
+
+polygon(c(1:9, 9,1), c(cumulativePx[1:9], Px[1],Px[1]), col=adjustcolor( "green", alpha.f = 0.2))
+text(7, 0.20, "P(x<=9)")
+
+polygon(c(9:n, n,9), c(cumulativePx[9:n], Px[n],Px[1]), col=adjustcolor( "brown", alpha.f = 0.2))
+text(18, 0.20, "P(x>9)")
+```
+ Lets calculate mean and standard deviation of our binomial model. 
+```{r}
+mu <- n*p # mean of a binomial distribution is equal to n * p 
+sigma <- sqrt(n*p*(1-p)) # stdev of a binomial distribution is equal to square root of n*p*(1-p)
+sd1.pos <- mu + sigma # lets calculate 1 stdev distance from mean in the positive side
+sd1.neg <- mu - sigma # lets calculate 1 stdev distance from mean in the negative side
+```
+
+And finally lets plot `mu` and stdev values on our plot. We use a function named `abline` which draws a horizontal or vertical line on the chart. `v` parameter is value of `x` that it draws a vertical line on it. 
+
+
+```{r}
+par(mar=c(5,5,5,5), las=1)
+plot.new()
+plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
+barplot(Px,space=0, ylim=c(0, max(Px)+0.2),col="orange")
+axis(side=1, at=seq(0.5,n, by=1), labels=seq(1,n, by=1)) 
+box()
+lines(x=c(9,9),y=c(0,0.3), col="red",lwd=2,lty="dashed")
+arrows(x0=9,y0=0.3,x1=0,y1=0.3, col = "red", lwd=2, lty="dashed")
+text(x=4.2,y=0.32,"P(x<=9)")
+cumulativePx <- pbinom(x,n,p) 
+plot.window(xlim=c(0,n), ylim=c(0,1.5))
+lines(x, cumulativePx, col="red", lwd=2) 
+axis(side=4,at=seq(0,1.5, by=0.2), labels=seq(0,1.5, by=0.2)) 
+polygon(c(1:9, 9,1), c(cumulativePx[1:9], Px[1],Px[1]), col=adjustcolor( "green", alpha.f = 0.2))
+text(7, 0.20, "P(x<=9)")
+polygon(c(9:n, n,9), c(cumulativePx[9:n], Px[n],Px[1]), col=adjustcolor( "brown", alpha.f = 0.2))
+text(18, 0.20, "P(x>9)")
+
+### New Lines of code
+
+abline(v=sd1.pos, lty= "dashed", col="gray")
+abline(v=sd1.neg, lty= "dashed", col="gray")
+text(sd1.pos+2, 1.2, "+1 sd")
+text(sd1.neg-2, 1.2, "-1 sd")
+```
+### Part I Assignment
+
+1- Add your name and date on the above chart and save it as an image on your one-drive. Submit it alongside your part II of lab before March 4th in MLS. 
+
+## Part II 
+In this part of the lab, we will cover sampling distributions and confidence intervals. To learn about these we are going to explore a new dataset which was painstakingly collected on a beach after a large storm. Our objective here is to try to estimate the average size of driftwood on the beach. Driftwood on beaches in coastal British Columbia is very common, and most are escaped logs from logging booms - while the odd one naturally uprooted shows up as well. Tracking how driftwood accumulates in different sections of beach is a fascinating combination of where logging takes place, how logs are transported, ocean currents and storm activity, etc. There is in fact a whole job category devoted to capturing escaped logs and selling them back to the logging companies - an occupation made famous by the epic Canadian 1980s television show - [The Beachcombers](https://en.wikipedia.org/wiki/The_Beachcombers) - set in Gibson’s B.C.
+
+![](https://www.youtube.com/watch?v=erd4vN40jYw)
+
+We set out to record the length of a sample of beach on the morning after a large storm. Our intended goal was to record the length of every notable log in the section of beach being sampled, but data collection had to be cut early due to an unruly field assistant. In all we collected the following 8 measurements:
+
+```{r}
+x = c(653, 646, 654, 153, 305, 1200, 1193, 172)
+```
+
+from which we can obtain a sample mean and sample standard deviation; as well as the summary command to see more descriptive statistics;
+
+```{r}
+mean(x)
+sd(x)
+summary(x)
+```
+
+which shows that there is a lot of variability in the lengths. We also have a tiny sample size which is not great. Lets look at the frequency distribution of our sample:
+```{r}
+
+hist(x, xlab="Driftwood Length (cm)", main="")
+```
+
+which shows the data is **not** normally distributed. However - we know we can use the sampling distribution of the mean to calculate the standard error of the mean even for non-normal data. Generally we want a larger sample size (`n >= 30`), but we will use what we have to illustrate. Recall that for the sampling distribution of  $\bar{x}$  the mean of sample means  $\mu_{\bar{x}}$ is equal to  $μ$ and that $σ_\bar{x}$ is equal to $\frac{\sigma}{\sqrt{n}}$ Now, because we do not know what $σ$ is - we have to use our sample estimate of it, which is $s$  which we calculate using the sd function -
+```{r}
+
+sd(x)
+```
+
+so we could calculate  $\frac{\sigma}{\sqrt{n}}$ using
+
+```{r}
+sd(x) / sqrt(8)
+```
+
+### Sampling Distribution of the Mean
+The sampling distribution for our mean is estimated as coming from a normal distribution with  $μ = μ_\bar{x}$ and $σ_\bar{x}=\frac{\sigma}{\sqrt{n}}$. Let’s pretend we knew the actual values of  $μ$ and  $σ$   and use the following two values for the population, a $μ$ of 860 and a  $σ$  of 270.
+
+The `z-score` of the sample mean is:
+
+$$
+z = \frac{\bar{x}-\mu}{\sigma_{\bar{x}}}
+$$
+
+
+so the question is how unusual is the mean we observed in our small sample? We can use the normal distribution as we have previously using the `pnorm` function. Let’s calculate the `z-score`:
+
+```{r}
+(mean(x) - 860) / (270/sqrt(8))
+```
+
+right away we should notice a couple of things with this z-score;
+
+1. The z-score is below `0` and therefore  $\bar{x} < \mu$
+
+2. The z-score is below -2 so this is a pretty unlikely outcome
+
+The probability of such a z-score or lower is
+
+```{r}
+
+pnorm(-2.493206, lower.tail = TRUE)
+
+```
+
+Now what would have happened if everything else was the same, but our sample size was only n = 2? Then we would be looking at:
+
+```{r}
+zscore = (mean(x) - 860) / (270/sqrt(2))
+pnorm(zscore, lower.tail = TRUE)
+```
+
+now this seems much more likely even though the sample mean stayed the same - this is because a sample statistic (or estimate of  $μ$  using $\bar{x|$) is highly uncertain if we only measured 2 logs.
+
+### Confidence Intervals
+A better way to capture the uncertainty in our sample statistic is with a confidence interval. Instead of calculating a z-score and finding a probability we invert that process - so we set the probability - which is our confidence level, then we find the associated value of z-score for this probability, then we find the interval of values around  $\bar{x|$.
+
+A generic formula for a confidence interval is:
+
+
+> point estimate +/- critical value * standard error
+
+
+Now let’s go through the steps above:
+
+1. Set the probability. There are common levels which we use such as 95% or 99% or 90%. We will use a 95% confidence level.
+
+2. Now we need to find a z-score associated with 95% probability. We do this by taking the inverse so 1-0.95. We could then use `qnorm` to find the z-score for 0.05. But this would be wrong because `qnorm` gives us one-tailed probabilities and we really need two-tailed (i.e., 0.05 split into the upper and lower tails), so we would use `qnorm(0.05/2)` which would give us a lower z-score associated with .025 probability. This is what we use as the **critical value** of the confidence interval.
+
+3. Now to find the interval in `R` we just need the standard error - which we already know is  $\frac{\sigma}{\sqrt{n}}$
+So it would look something like:
+
+```{r}
+z_crit = qnorm(0.05/2, lower.tail = FALSE)
+lower = mean(x) - (z_crit * (270/sqrt(8)))
+upper = mean(x) + (z_crit * (270/sqrt(8)))
+plot(x=c(lower, upper), y=c(1, 1), type="l", xlim = c(min(x),max(x)), xlab="Driftwood Length (cm)", ylab="", col = "Black")
+points(x = mean(x), y = 1, pch=20, cex=3)
+
+#we could add another to it if we wanted
+z_crit = qnorm(0.10/2, lower.tail = FALSE)
+lower = mean(x) - (z_crit * (270/sqrt(8)))
+upper = mean(x) + (z_crit * (270/sqrt(8)))
+lines(x = c(lower, upper), y=c(1.2, 1.2), col="red")
+points(x = mean(x), y = 1.2, pch=20, cex=3)
+```
+
+So there is a lot of extra commands here you can ignore. The key thing being that what do we notice about the second (red) interval we created? It is narrower. This is because we set the probability value to be lower (i.e., we have lower confidence) - which basically means - we can be less sure (only 90% instead of 95%) about a narrower interval - for the same data.
+
+The above procedure for a confidence interval works for when we have a normally distributed test statistic, that is why we use a z-score as the critical value. In cases where we have a small sample size we can actually use another distribution - `the t distribution` - as the critical value. In this way we can capture the greater uncertainty associated with very small sample sizes.
+
+We can use the `qt` function to get critical values from the `t-distribution`. Take a look at the help to see how to set the degrees of freedom.
+
+### Part II Assignment
+Because we have three weeks to complete, we are doing things a little differently. It is a challenge to create datasets that are of interest to all students so instead for this lab we are going to get you to find your own. This can be as simple or as complex as you want to make it. The key point is that you collect/create the dataset yourself (i.e., this is not taken from an example elsewhere).
+
+Try to get a sample size of at least 30. If collecting this dataset requires you going outside and measuring something - even better. Or this can be something related to sports, music, whatever interests you. Use Piazza to ask questions about suitable datasets if you are not sure. You could for example check the temperature at environment canada on this day for the past 30 years. Or you could check with goals against average for Toronto Maple Leafs goalies for the past 30 years. It is up to you - but the dataset needs to be unique to you and you will have to explain where it comes from in your write up.
+
+1. Write a paragraph describing your dataset. Include how you acquired it, why you selected it, what the variable of interest is, whether there is any measurement error, sources of sampling error, bias, etc. Also include a histogram and a table with basic summmary statistics describing your dataset. The histogram and table should have descriptive captions. Include your dataset with your R commands. (out of 10)
+
+2. Create 90%, 95% and 99% confidence intervals for your data (using a sample mean). Plot these on graph. Include a sentence describing what these mean and commands used to generate the answer. (out of 10)
+
+3. Repeat everything for question 2 but this time use a t-critical value (i.e., you will have to use the qt function to find the critical value). You can use the same or a different variable (than that used in question 2) to analyze - use sample to create a random sample of size n = 20 if you have more than 20 observations in your dataset. (out of 10)
+
+4. Conduct your own analysis of the dataset. This could include calculating z-scores to find unusual values or groups of unusual values and any plots you want to explore. Write a paragrph commenting on the results and interpreting your findings. (out of 10)
+
+
+## Hand in
+
+Please submit your answers on MLS under Assignment 2. Your final report should be in `pdf` format. Also Please make sure to include **clean** codes and their results. The document formatting of your assignment has *5 marks*. 
+
+
+## Credit 
+
+This lab material for part II is adopted from GESC 258- Labs originally developed by Dr. Colin Robertson.

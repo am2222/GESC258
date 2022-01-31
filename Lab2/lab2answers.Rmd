@@ -37,8 +37,9 @@ dpois(x = 15, lambda = mean(answer))
 ```{r}
 
 p3 <- dpois(x = 3, lambda = mean(answer)) 
+p4 <- dpois(x = 4, lambda = mean(answer)) 
 p5 <- dpois(x = 5, lambda = mean(answer)) 
-p5-p3
+p3+p4+p5
 ```
 
 3. There are two important assumptions to using the Poisson distribution we should consider.
@@ -68,7 +69,9 @@ Write short paragraph (200-300 words) explaining why or why not these assumption
 
 
 ```{r}
-prop <- dpois(x = answer, lambda = mean(answer))
+prop <- dpois(x = answer, lambda = mean(answer)) # This line is the answer for calculating all the probabilities for all cells
+
+# we can also plor them and show them as a table. 
 plot(answer, prop, pch=20, cex=2, xlab = "Pit Count", ylab = "Probability")
 cbind(prop,answer)
 ```
@@ -85,10 +88,12 @@ cbind(prop,answer)
 
 ```{r}
 x <- c(272,272,236,154,256,156,143,269,205,175)
-pnorm(q=90, mean = mean(x), sd=sd(x), lower.tail = FALSE) # method 1
+dbh <- x/pi
+
+pnorm(q=90, mean = mean(dbh), sd=sd(dbh), lower.tail = FALSE) # method 1
 
 # using the second method 
-z_score <- (90 - mean(x)) / sd(x)
+z_score <- (90 - mean(dbh)) / sd(dbh)
 pnorm(z_score, lower.tail=FALSE)
 ```
 
