@@ -1,0 +1,114 @@
+---
+title: "assignment4_answers"
+output: html_document
+date: '2022-03-09'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lab Assignment
+
+1. Generate random points for a study area of interest to you (as in the example above). Conduct a hypotheses test that the mean difference is a) equal to zero then b) greater than `0.02`. For each use the` t.test `function. In your answer include your hypothesis statements, `p-value`, and a sentence interepting your results from each hypothesis test. Include a screenshot showing your bounding box coordinates plotted on Google Maps (out of 5)
+
+If students follow the lab. they have already done part one of this question
+
+Students need to first select an study area. They then go to the (http://bboxfinder.com/) and find bbox of their study area:
+This is my own selected area `-81.507419,45.964666,-81.493774,45.971631`
+
+```{r}
+X1 <- runif(29, min = 81.808421, max = 81.851207)
+Y1 <- runif(29, min = 6.825655, max = 6.852244)
+df1 <- data.frame(X1, Y1)
+
+
+X2 <- runif(29, min = 81.808421, max = 81.851207)
+Y2 <- runif(29, min = 6.825655, max = 6.852244)
+df2 <- data.frame(X2, Y2)
+
+d <- sqrt((df1$X1 - df2$X2)^2 + (df1$Y1 - df2$Y2)^2)
+```
+
+**This is hypothesis for mean difference is equal to zero **
+$$H_0: \mu = 0$$
+$$H_a: \mu \ne 0$$
+Test it using `t.test`
+```{r}
+t.test(d, mu=0)
+
+```
+
+
+
+**This is hypothesis for mean difference is grater than 0.02**
+
+$$H_0: \mu \geq  0.02$$
+
+$$H_A: \mu \lt 0.02$$
+ 
+
+the above would change to
+```{r}
+t.test(x=d, alternative ="less", mu=0.02)
+
+```
+
+
+2. For the GPS data, is the mean difference significantly different from *zero* ( $α=0.05$ )? Use the` t.test` function. In your answer include your hypothesis statements, `p-value`, and a sentence interepting your results from each hypothesis test. (out of 5)
+
+To answer this question, students need to use the following dataset I gave them in the `GPS DATA` section of the lab
+
+
+```{r}
+df <- read.csv("https://www.dropbox.com/s/f7xcibye2epgqgy/dfprocessed.csv?dl=1")
+open_dis <- df$dis[which(df$loctype=="Open")]
+forest_dis <- df$dis[which(df$loctype=="Forest")]
+```
+
+This is hypothiss 
+
+$H_0: \mu = 0$ 
+$H_a: \mu \ne 0$ 
+
+so now we are testing  $H_0: \mu = 0$ on the sample mean difference in `d`
+
+```{r}
+
+t.test(df$dis, mu=0)
+```
+
+
+3. For the GPS data, was the difference between the two receivers statistically different between locations under *forest canopy* vs. *open sky*? Was there more or less difference when under forest canopy? Conduct both one tailed and two tailed hypothesis tests. For this question you can use the` t.test` function. In your answer include your hypothesis statements, `p-value`, and a sentence interepting your results from each hypothesis test. (out of 5)
+
+To answer the question that was the difference between the two receivers statistically different between locations under *forest canopy* vs. *open sky*? 
+assume $\mu_1$ is data of forst and $\mu_2$ is for open sky. 
+$$H_0: \mu_1 = \mu_2$$
+$$H_A: \mu_1 \ne \mu_2$$
+```{r}
+t.test(forest_dis,open_dis)
+```
+
+
+
+for the part two that asks Was there more or less difference when under forest canopy?  Again we assume $\mu_1$ is data of forst and $\mu_2$ is for open sky. 
+
+
+$$H_0: \mu_1 \leq \mu_2$$
+$$H_A: \mu_1 \gt \mu_2$$
+```{r}
+t.test(forest_dis,open_dis,alternative = "less")
+```
+
+4. For the GPS data, test whether the distance between the two receivers were statistically lower when accuracy was low (<=12, vs high >12). For this question you can just use the `t.test` function. In your answer include your hypothesis statements, p-value, and a sentence interepting your results from each hypothesis test. (out of 5)
+assume $\mu_1$ is when accuracy was low and $\mu_2$ is when accuracy was high. 
+$$H_0: \mu_1 \leq \mu_2$$
+$$H_A: \mu_1 \gt \mu_2$$
+```{r}
+# use this codes to filter gps data based on the accuracy 
+low_accuracy <- df$dis[which(df$acc<=12)]
+high_accuracy <- df$dis[which(df$acc>12)]
+
+t.test(low_accuracy,high_accuracy,alternative = "less")
+```
+

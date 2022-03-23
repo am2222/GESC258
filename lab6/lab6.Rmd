@@ -1,0 +1,75 @@
+---
+title: "GESC 258- Assignment 5 - ANOVA"
+author: "ASSIGNED in Lab 10, Mar 25th. "
+date: "Due Date: April 1st"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+    math: katex
+    toc: True
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+# GESC 258- Geographical Research Methods
+
+## ANOVA
+
+In this week's lab we want to analyze snowfall data. There are many places to pull weather/climate data online, most of which draw their source data from Environment Canada weather station network. There is an `r` package to pull data directly into r from the Environment Canada API, but we will use another site `weatherstats.ca` which has a nice dasboard interface onto the EC data. However if we want to do some statistical analysis ourselves we need to bring this data intor.
+
+We will compare snowfall in three Ontario cities, `Hamilton`, `Toronto`, and `Ottawa`. I have done the heavy lifting in taking data from (https://ottawa.weatherstats.ca/), (https://toronto.weatherstats.ca/), and (https://hamilton.weatherstats.ca/) and formatted it into a nice`data.frame` object which you can read in as follows:
+
+```{r}
+
+x <- read.csv("https://www.dropbox.com/s/ze5saukvq1tjzbs/snow.csv?dl=1")
+```
+
+Now let's take a look at this dataset:
+
+```{r}
+names(x) #check out the column names to see what variables we have
+head(x)  #check out first few rows
+tail(x)  #check out last few rows
+nrow(x)  #see total number of rows in the dataset
+```
+
+Well we can see that there are 100 rows, where each row corresponds to year annual total snowfall in a particular city. Let's checkout what cities/years of data are here:
+
+```{r}
+unique(x$City)
+summary(x$Year)
+
+```
+
+So we have four cities, and data ranging from 1996 to 2020. Our variable of interest here is snowfall, which is recorded in centimeters. Unfortunately, we have the units 'cm' stored as data - something which happens a lot but can make analysis more complicated. As it stands now, `r` has no way of knowing that the values in the Snow column are numeric, so the values also has text. We can verify this by checking the class of the column
+
+```{r}
+
+class(x$Snow)
+
+```
+
+which means it is character (i.e., text). We need to just pull out the numeric part of the values in the Snow column so that we can analyze them statistically. If you try to do analysis of the data now you will get an error:
+
+```{r}
+mean(x$Snow)
+```
+
+so we look at the values and look for a pattern for what exactly we want:
+
+```{r}
+
+
+head(x$Snow, 10)
+
+```
+
+there are a few of things to take notice of. The numbers part of the values in`x$Snow` are surrounded by blank spaces. Also, there is an empty space after the `“cm”` part. What we need to do is a little [string parsing](https://www.google.com/search?sxsrf=ALeKk0045-oG5yzUORUOqDvhNGsQTyA9Sg%3A1615327082058&ei=au9HYImRA5Tz-gTV8qagBQ&q=string+parsing+in+r&oq=string+parsing+in+r&gs_lcp=Cgdnd3Mtd2l6EAMyAggAMgIIADIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeOgcIABCwAxBDOgcIABBHELADOgQIABBDOgcIABCHAhAUULU7WIFAYJNBaAFwAngAgAF1iAH6A5IBAzUuMZgBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=gws-wiz&ved=0ahUKEwiJ7q-nmqTvAhWUuZ4KHVW5CVQQ4dUDCA0&uact=5) - much of learning `r` or any other technical skill often boils down to knowing what to Google. The best library for doing this kind of thing in `r` is called `stringr` - which you will have to install with `install.packages('stringr')` before you can load it.
+
+Let's formulate a set of rules for exactly how we want to pull out the numeric part of the values in the x\$Snow data.
+
+get rid of trailing spaces pull out everything up to the first space convert output of 2 to a numeric variable This is really easy to do in r but would be tedious and annoying to do by hand. We will wrap our examples in the head function so we just see the first few rows of output

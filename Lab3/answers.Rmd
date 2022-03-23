@@ -1,0 +1,175 @@
+---
+title: "Assignment3_answers"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Part II Assignment
+> Because we have three weeks to complete, we are doing things a little differently. It is a challenge to create data-sets that are of interest to all students so instead for this lab we are going to get you to find your own. This can be as simple or as complex as you want to make it. The key point is that you collect/create the dataset yourself (i.e., this is not taken from an example elsewhere).
+
+> **Try to get a sample size of at least 30.** If collecting this dataset requires you going outside and measuring something - even better. Or this can be something related to sports, music, whatever interests you. Use Piazza to ask questions about suitable data sets if you are not sure. You could for example check the temperature at environment Canada on this day for the past 30 years. Or you could check with goals against average for Toronto Maple Leafs goalies for the past 30 years. It is up to you - but the dataset needs to be unique to you and you will have to explain where it comes from in your write up.
+
+> 1. Write a paragraph describing your dataset. Include how you acquired it, why you selected it, what the variable of interest is, whether there is any measurement error, sources of sampling error, bias, etc. Also include a histogram and a table with basic summary statistics describing your dataset. The histogram and table should have descriptive captions. Include your dataset with your R commands. (out of 10)
+
+Here students need to think about type of dataset they want to collect. They have to be able to find population standard deviation and mean for that. For example they can ask from their friends how tall are they, then they construct a dataset related to that. With a simple googling they can find stdev of the canadian men/woman height. Number of accidents in past 30 months in Toronto or natural events such as earthquake, wildfires and floods can be easily found on internet. can be used. Just let them know that they need to find population's standard deviation as well. 
+
+another workaround is that they find a dataset with lets say 100 members, then calculate its mean and stdev and consider it as a population. then select 30 members from that 100 member randomly and consider it as a random sample. 
+
+To have a table of basic summery they can use following codes
+
+```{r eval=FALSE}
+mean(x)
+sd(x)
+summary(x)
+```
+
+To plot a histogram students can use `hist` function. In lab1 I have shown how we can use it. They can also type `?hist` to learn how to work with it.
+Students need to mention source of the data, and mention where they could find the 
+
+
+
+Some of the links for the students
+
+https://earthquakescanada.nrcan.gc.ca/stndon/NEDB-BNDS/bulletin-en.php
+
+https://tsunami.gov
+
+https://climate.weather.gc.ca/historical_data/search_historic_data_e.html
+
+
+
+Minimum expectation:
+
+1. one histogram (2.5 marks)
+
+2. A table of summery (2.5 marks)
+
+3. A paragraph about dataset (2.5 marks)
+
+4. Code (2.5 marks)
+
+
+
+> 2. Create 90%, 95% and 99% confidence intervals for your data (using a sample mean). Plot these on graph. Include a sentence describing what these mean and commands used to generate the answer. (out of 10)
+
+They need to have their sample defined using this code. They should have 30 numbers
+
+```
+x = c(1,2,3,4,5) 
+```
+They also need to have population's stdev. So
+```
+population_sd <- 10 #based on their selected topic
+
+```
+Once they have these two numbers they can plot confidence intervals using similar codes (they need to read confidence intervals section to answer this question)
+
+```
+z_crit = qnorm(0.05/2, lower.tail = FALSE) # if its 95% (1-0.95=0.05) so we use 0.05, if it is 99% (1-.99=0.01) so they use 0.01 instead of 0.05 and so on
+lower = mean(x) - (z_crit * (population_sd/sqrt(length(x)))) 
+upper = mean(x) + (z_crit * (population_sd/sqrt(length(x))))
+plot(x=c(lower, upper), y=c(1, 1), type="l", xlim = c(min(x),max(x)), xlab="Variable Title, They have to change this", ylab="", col = "Black")
+points(x = mean(x), y = 1, pch=20, cex=3)
+
+#we could add another to it if we wanted
+z_crit = qnorm(0.10/2, lower.tail = FALSE)
+lower = mean(x) - (z_crit * (population_sd/sqrt(length(x))))
+upper = mean(x) + (z_crit * (population_sd/sqrt(length(x))))
+lines(x = c(lower, upper), y=c(1.2, 1.2), col="red")
+points(x = mean(x), y = 1.2, pch=20, cex=3)
+
+```
+Minimum expectation:
+
+1. one plot (2.5 marks)
+
+2. 3 confidence intervals (2.5 marks)
+
+3. A sentence explaining the outputs (2.5 marks)
+
+4. Code (2.5 marks)
+
+
+
+> 3. Conduct your own analysis of the dataset. This could include calculating z-scores to find unusual values or groups of unusual values and any plots you want to explore. Write a paragraph commenting on the results and interpreting your findings. (out of 10)
+
+Here I want to see what students know so far.
+They can find z-score associated to each of sample members and see what sample member has higher probability of appearance and so on (numbers around sample mean, have higher probability value of being selected). They can also find probability of different sample means fall in different intervals using central limit theorem. Like what is probability of sample means fall in specific distance. Or what percentage of the sample means falls in in specific interval. 
+
+For the charts They will be able to plot bar charts, Histograms and they can also search to learn more about different charts. 
+
+This is an example of plot 
+```{r}
+#define population mean and standard deviation
+x = c(653, 646, 654, 153, 305, 1200, 1193, 172)
+sample_mean <- mean(x)
+
+population_mean <- 860
+population_sd <- 270
+
+sampling_distributions_sd <- population_sd/sqrt(length(x))
+sampling_distributions_mean <- population_mean
+#Create a sequence of 1000 x values based on population mean and standard deviation
+sampling_distributions <- seq(-4, 4, length = 1000) * sampling_distributions_sd + sampling_distributions_mean
+#for each value in x
+y <- dnorm(sampling_distributions, sampling_distributions_mean, sampling_distributions_sd)
+#plot normal distribution with customized x-axis labels
+plot(sampling_distributions,y, type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+sd_axis_bounds = 5 # we will plot until 5 stdev
+axis_bounds <- seq(-sd_axis_bounds * sampling_distributions_sd + sampling_distributions_mean,
+                   sd_axis_bounds * sampling_distributions_sd + sampling_distributions_mean,
+                   by = sampling_distributions_sd)
+
+axis(side = 1, at = axis_bounds, pos = 0)
+#lets calculate 3sd if x bar falls above or bellow 3stdev we know it has very low probability
+upper_b <- sampling_distributions_mean +1 * sampling_distributions_sd
+lower_b <- sampling_distributions_mean - 1 * sampling_distributions_sd
+
+abline(v=upper_b,col="orange")
+polygon(c(sampling_distributions[sampling_distributions>=upper_b], max(sampling_distributions), upper_b), c(y[sampling_distributions>=upper_b], 0, 0), col="red")
+text(upper_b+10, 0.001, "P(X>)=0.01")
+
+abline(v=lower_b,col="orange")
+polygon(c(min(sampling_distributions),sampling_distributions[sampling_distributions<=lower_b],lower_b ), c(0,y[sampling_distributions<=lower_b], 0), col="red")
+text(lower_b-10, 0.001, "P(X<)=0.01")
+
+
+abline(v=sample_mean,col="green")
+text(sample_mean+10, 0.004, "sample mean")
+
+
+```
+
+
+In order to calculate z-scores
+
+```{r}
+#define population mean and standard deviation
+x = c(653, 646, 654, 153, 305, 1200, 1193, 172)
+sample_mean <- mean(x)
+
+population_mean <- 860
+population_sd <- 270
+
+sampling_distributions_sd <- population_sd/sqrt(length(x))
+z_score_for_sample_mean <-(sample_mean - population_mean)/sampling_distributions_sd
+pnorm(z_score_for_sample_mean, lower.tail = TRUE) #The probability of such a z-score or lower is
+
+
+
+```
+
+
+Minimum expectation:
+
+1. At least one plot (2.5 marks)
+
+2. different z-score (2.5 marks)
+
+3. Explaining the outputs (2.5 marks)
+
+4. Code (2.5 marks)
+

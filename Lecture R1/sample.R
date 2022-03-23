@@ -90,9 +90,9 @@ box()
 lines(x=c(9,9),y=c(0,0.3), col="red",lwd=2,lty="dashed")
 arrows(x0=9,y0=0.3,x1=0,y1=0.3, col = "red", lwd=2, lty="dashed")
 text(4,0.31,"P(x<=9)")
-plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
-barplot(Px[1:9],space=0,ylim=c(0, max(Px)+0.2),col=adjustcolor( "yellow", alpha.f = 0.2))
-add_bars(Px[1:9], seq(1,9,by=1))
+#plot.window(xlim=range(x), ylim=c(0, max(Px)+0.2))
+#barplot(Px[1:9],space=0,ylim=c(0, max(Px)+0.2),col=adjustcolor( "yellow", alpha.f = 0.2))
+#add_bars(Px[1:9], seq(1,9,by=1))
 
 
 cumPx <- pbinom(x,n,p) 
